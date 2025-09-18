@@ -195,22 +195,22 @@ export default function Lab1() {
         <form id="wd-text-fields">
           <h5>Text Fields</h5>
           <label htmlFor="wd-text-fields-username">Username:</label>
-          <input placeholder="jdoe" id="wd-text-fields-username" /> <br />
+          <input placeholder="jdoe" id="wd-text-fields-username" defaultValue="John.Wonderland"/> <br />
           <label htmlFor="wd-text-fields-password">Password:</label>
           <input
             type="password"
-            value="123@#$asd"
+            defaultValue="123@#$asd"
             id="wd-text-fields-password"
           />
           <br />
           <label htmlFor="wd-text-fields-first-name">First name:</label>
-          <input type="text" title="John" id="wd-text-fields-first-name" />{" "}
+          <input type="text" title="John" id="wd-text-fields-first-name" placeholder="John" defaultValue="John"/>{" "}
           <br />
           <label htmlFor="wd-text-fields-last-name">Last name:</label>
           <input
             type="text"
             placeholder="Doe"
-            value="Wonderland"
+            defaultValue="Wonderland"
             title="The last name"
             id="wd-text-fields-last-name"
           />
@@ -237,7 +237,7 @@ export default function Lab1() {
           <h5 id="wd-radio-buttons">Radio buttons</h5>
           <label>Favorite movie genre:</label>
           <br />
-          <input type="radio" name="radio-genre" id="wd-radio-comedy" />
+          <input type="radio" name="radio-genre" id="wd-radio-comedy" defaultChecked/>
           <label htmlFor="wd-radio-comedy">Comedy</label>
           <br />
           <input type="radio" name="radio-genre" id="wd-radio-drama" />
@@ -251,13 +251,13 @@ export default function Lab1() {
           <h5 id="wd-checkboxes">Checkboxes</h5>
           <label>Favorite movie genre:</label>
           <br />
-          <input type="checkbox" name="check-genre" id="wd-chkbox-comedy" />
+          <input type="checkbox" name="check-genre" id="wd-chkbox-comedy" defaultChecked/>
           <label htmlFor="wd-chkbox-comedy">Comedy</label>
           <br />
           <input type="checkbox" name="check-genre" id="wd-chkbox-drama" />
           <label htmlFor="wd-chkbox-drama">Drama</label>
           <br />
-          <input type="checkbox" name="check-genre" id="wd-chkbox-scifi" />
+          <input type="checkbox" name="check-genre" id="wd-chkbox-scifi" defaultChecked/>
           <label htmlFor="wd-chkbox-scifi">Science Fiction</label>
           <br />
           <input type="checkbox" name="check-genre" id="wd-chkbox-fantasy" />
@@ -267,7 +267,7 @@ export default function Lab1() {
           <label htmlFor="wd-select-one-genre"> Favorite movie genre: </label>
           <br />
           <select id="wd-select-one-genre">
-            <option value="COMEDY">Comedy</option>
+            <option value="COMEDY" selected>Comedy</option>
             <option value="DRAMA">Drama</option>
             <option selected value="SCIFI">
               Science Fiction
@@ -278,7 +278,7 @@ export default function Lab1() {
           <label htmlFor="wd-select-many-genre"> Favorite movie genres: </label>
           <br />
           <select multiple id="wd-select-many-genre">
-            <option value="COMEDY" selected>
+            <option value="COMEDY" selected> 
               {" "}
               Comedy{" "}
             </option>
@@ -295,12 +295,13 @@ export default function Lab1() {
             type="email"
             placeholder="jdoe@somewhere.com"
             id="wd-text-fields-email"
+            defaultValue="johnW@abc.com"
           />
           <br />
           <label htmlFor="wd-text-fields-salary-start"> Starting salary:</label>
           <input
             type="number"
-            value="100000"
+            defaultValue="100000"
             placeholder="1000"
             id="wd-text-fields-salary-start"
           />
@@ -308,14 +309,14 @@ export default function Lab1() {
           <label htmlFor="wd-text-fields-rating"> Rating: </label>
           <input
             type="range"
-            value="4"
+            defaultValue="4"
             max="5"
             placeholder="Doe"
             id="wd-text-fields-rating"
           />
           <br />
           <label htmlFor="wd-text-fields-dob"> Date of birth: </label>
-          <input type="date" value="2000-01-21" id="wd-text-fields-dob" />
+          <input type="date" defaultValue="2000-01-21" id="wd-text-fields-dob" />
           <br />
         </form>
         <h4>Anchor tag</h4>

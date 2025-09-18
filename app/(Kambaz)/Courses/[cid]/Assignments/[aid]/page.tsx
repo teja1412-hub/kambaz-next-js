@@ -50,9 +50,9 @@ export default function AssignmentEditor() {
             <td></td>
             <td>
                 Online Entry Options <br />
-                <input type="checkbox" name="wd-online-entry-options" id="wd-text-entry"/>
+                <input type="checkbox" name="wd-online-entry-options" id="wd-text-entry" defaultChecked/>
                 <label htmlFor="wd-text-entry">Text Entry</label> <br/>
-                <input type="checkbox" name="wd-online-entry-options" id="wd-website-url"/>
+                <input type="checkbox" name="wd-online-entry-options" id="wd-website-url" defaultChecked/>
                 <label htmlFor="wd-website-url">Website URL</label> <br/>
                 <input type="checkbox" name="wd-online-entry-options" id="wd-media-recordings"/>
                 <label htmlFor="wd-media-recordings">Media Recordings</label> <br/>
@@ -66,25 +66,25 @@ export default function AssignmentEditor() {
             <td><label htmlFor="assign-to">Assign</label></td>
             <td>
                 <label htmlFor="assign-to">Assign to</label><br/>
-                <input id="assign-to" />
+                <input id="assign-to" defaultValue="Everyone"/>
             </td>
         </tr>
         <tr>
             <td></td>
             <td>
-                <label htmlFor="wd-due-date">Due</label><br/>
-                <input type="date" id="wd-due-date" />
+                <label htmlFor="wd-due-date" >Due</label><br/>
+                <input type="date" id="wd-due-date" defaultValue="2025-09-21"/>
             </td>
         </tr>
         <tr>
             <td></td>
             <td>
-                <label htmlFor="wd-available-from">Available from</label><br/>
-                <input type="date" id="wd-available-from" />
+                <label htmlFor="wd-available-from" >Available from</label><br/>
+                <input type="date" id="wd-available-from" defaultValue="2025-09-17"/>
             </td>
             <td>
-                <label htmlFor="wd-available-until">Available until</label><br/>
-                <input type="date" id="wd-available-until" />
+                <label htmlFor="wd-available-until" >Available until</label><br/>
+                <input type="date" id="wd-available-until" defaultValue="2025-09-21"/>
             </td>
         </tr>
       </table>
