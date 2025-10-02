@@ -208,7 +208,7 @@ export default function Assignments() {
         </ul>
       </div>
 
-      <div id="wd-projects"> */}
+      <div id="wd-projects"> 
         <input placeholder="Search for Projects" id="wd-search-project" />
         <button id="wd-add-project-group">+ Group</button>
         <button id="wd-add-project">+ Project</button>
@@ -222,7 +222,7 @@ export default function Assignments() {
             </Link>{" "}
             <br /> <b>Due</b> Dec 13 at 11:59pm | 100 pts
           </li>
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

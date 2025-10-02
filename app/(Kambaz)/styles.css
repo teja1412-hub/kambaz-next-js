@@ -51,4 +51,7 @@ body * {
 .wd-border-solid {
   border-style: solid;
 }
+.wd-dashboard-course {
+  margin-bottom: 30px;
+}
 
