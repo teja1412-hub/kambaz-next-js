@@ -4,7 +4,7 @@ export default function Quizzes() {
   return (
     <div>
       <h2>Quizzes</h2>
-      <div id="wd-quizzes">
+      {/* <div id="wd-quizzes">
         <input placeholder="Search for Quizzes"
               id="wd-search-quiz" />
         <button id="wd-add-quiz-group">+ Group</button>
@@ -23,6 +23,6 @@ export default function Quizzes() {
               Q2 - CSS + BOOTSTRAP
             </Link> <br /> Multiple Modules | <b>Not available until</b>  May 13 at 12.00am | <b>Due</b> May 20 at 11:59pm | 100 pts </li>
         </ul>
-      </div>
+      </div> */}
     </div>
 );}

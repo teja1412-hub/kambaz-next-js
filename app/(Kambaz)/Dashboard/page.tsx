@@ -36,7 +36,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CS3L002_Fall 2025 Semester
                   </CardText>
@@ -65,7 +65,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CS3L005_Fall 2025 Semester
                   </CardText>
@@ -94,7 +94,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CPH6L001_Fall 2025 Semester
                   </CardText>
@@ -123,7 +123,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CS3L001_Fall 2025 Semester
                   </CardText>
@@ -152,7 +152,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     ME3L501_Fall 2025 Semester
                   </CardText>
@@ -181,7 +181,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CS2L001_Fall 2025 Semester
                   </CardText>
@@ -210,7 +210,7 @@ export default function Dashboard() {
                   </CardTitle>
                   <CardText
                     className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
+                    style={{ height: "50px" }}
                   >
                     CY1L001_Fall 2025 Semester
                   </CardText>

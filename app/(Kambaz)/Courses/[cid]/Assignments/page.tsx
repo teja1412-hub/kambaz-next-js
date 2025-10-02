@@ -120,7 +120,7 @@ export default function Assignments() {
             </ListGroup>
           </ListGroupItem>
         </ListGroup>
-        <input placeholder="Search for Assignments" id="wd-search-assignment" />
+        {/* <input placeholder="Search for Assignments" id="wd-search-assignment" />
         <button id="wd-add-assignment-group">+ Group</button>
         <button id="wd-add-assignment">+ Assignment</button>
         <h3 id="wd-assignments-title">
@@ -208,7 +208,7 @@ export default function Assignments() {
         </ul>
       </div>
 
-      <div id="wd-projects">
+      <div id="wd-projects"> */}
         <input placeholder="Search for Projects" id="wd-search-project" />
         <button id="wd-add-project-group">+ Group</button>
         <button id="wd-add-project">+ Project</button>
