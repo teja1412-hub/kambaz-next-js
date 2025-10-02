@@ -15,13 +15,13 @@ export default function AssignementControls() {
           aria-label="Search assignments"
         />
       </InputGroup>
-    <div className="d-flex gap-2">
+    <div className="d-flex flex-wrap justify-content-end gap-2 mb-0">
            <Button variant="secondary" size="lg" id="wd-add-module-btn">
        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
        Group
      </Button>
       <Button variant="danger" size="lg" id="wd-collapse-alln">
-        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+        <FaPlus className="position-relative me-2" style={{ bottom: "1px"}} />
        Assignment
      </Button>
     </div>

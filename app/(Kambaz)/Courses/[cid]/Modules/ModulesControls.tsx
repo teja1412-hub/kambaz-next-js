@@ -3,9 +3,9 @@ import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
 export default function ModulesControls() {
  return (
-   <div id="wd-modules-controls" className="text-nowrap">
+   <div id="wd-modules-controls" className="d-flex flex-wrap justify-content-end gap-2 mb-0">
      <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn">
-       <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+       <FaPlus className="position-relative me-2" style={{ bottom: "1px"}} />
        Module
      </Button>
      <Dropdown className="float-end me-2">
@@ -30,10 +30,10 @@ export default function ModulesControls() {
          </DropdownItem>
        </DropdownMenu>
      </Dropdown>
-     <Button variant="danger" size="lg" className="me-1 float-end" id="wd-view-progress">
+     <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-view-progress">
        View Progress
      </Button>
-     <Button variant="danger" size="lg" className="me-1 float-end" id="wd-collapse-alln">
+     <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-collapse-alln">
        Collapse All
      </Button>
    </div>
