@@ -99,7 +99,7 @@ export default function Profile() {
               id="wd-profile-btn"
               variant="danger"
               type="submit"
-              as={Link}
+              // as={Link}
               href="Signin"
             >
               Sign out
