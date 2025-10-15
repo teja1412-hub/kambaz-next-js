@@ -54,4 +54,10 @@ body * {
 .wd-dashboard-course {
   margin-bottom: 30px;
 }
+.wd-assignment-link{
+  color:black !important;
+}
+.wd-percentage-box{
+  padding: 0rem 0.5rem;
+}
 

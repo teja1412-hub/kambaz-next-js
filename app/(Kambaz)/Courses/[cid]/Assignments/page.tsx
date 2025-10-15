@@ -17,7 +17,7 @@ export default function Assignments() {
         <br />
         <ListGroup className="rounded-0" id="wd-modules">
           <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
-            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between align-items-center">
+            <div className="wd-title p-2 ps-2 bg-secondary d-flex justify-content-between align-items-center">
               {/* LEFT side: Icon + Title */}
               <div className="d-flex align-items-center">
                 <BsGripVertical className="me-2 fs-3" />
@@ -27,7 +27,7 @@ export default function Assignments() {
               {/* RIGHT side: 40% box + controls */}
               <div className="d-flex align-items-center">
                 <p
-                  className="wd-rounded-corners-all-around wd-border-thin wd-border-black wd-border-solid wd-padding-fat mb-0 me-3"
+                  className="wd-rounded-corners-all-around wd-border-thin wd-border-black wd-border-solid wd-percentage-box mb-0 me-3"
                   style={{ whiteSpace: "nowrap" }}
                 >
                   40% of Total
@@ -37,7 +37,7 @@ export default function Assignments() {
             </div>
 
             <ListGroup className="wd-lessons rounded-0 ">
-              <ListGroupItem className="wd-lesson p-3 ps-1">
+              <ListGroupItem className="wd-lesson px-3 ps-1">
                 <div className="d-flex justify-content-between align-items-start">
                   <div className="d-flex align-items-start">
                     <BsGripVertical className="me-2 fs-3 mt-1" />
