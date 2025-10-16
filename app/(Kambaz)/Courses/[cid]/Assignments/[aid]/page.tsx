@@ -1,19 +1,29 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import * as db from "../../../../Database"; // Make sure this points to the right location
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams(); // Course ID and Assignment ID
+  const assignment = db.assignments.find((a) => a._id === aid);
+
+  if (!assignment) {
+    return <div className="p-4">Assignment not found.</div>;
+  }
+
   return (
     <div id="wd-assignments-editor" className="p-4">
       <Form>
         {/* Assignment Name */}
         <Form.Group className="mb-3">
           <Form.Label>Assignment Name</Form.Label>
-          <Form.Control type="text" defaultValue="A1" />
+          <Form.Control type="text" defaultValue={assignment.title} />
         </Form.Group>
 
         {/* Description */}
@@ -21,13 +31,7 @@ export default function AssignmentEditor() {
           <Form.Control
             as="textarea"
             rows={6}
-            defaultValue={`The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.
-
-The landing page should include:
-• Your full name and section
-• Links to each of the lab assignments
-• Link to the Kanbas application
-• Links to all relevant source code repositories`}
+            defaultValue={assignment.description}
           />
         </Form.Group>
 
@@ -38,7 +42,11 @@ The landing page should include:
               Points
             </Form.Label>
             <div className="col">
-              <Form.Control id="wd-points" type="number" defaultValue={100} />
+              <Form.Control
+                id="wd-points"
+                type="number"
+                defaultValue={assignment.points}
+              />
             </div>
           </div>
         </Form.Group>
@@ -90,33 +98,11 @@ The landing page should include:
 
                   <Form.Label>Online Entry Options</Form.Label>
                   <div>
-                    <Form.Check
-                      type="checkbox"
-                      id="wd-text-entry"
-                      label="Text Entry"
-                      defaultChecked
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      id="wd-website-url"
-                      label="Website URL"
-                      defaultChecked
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      id="wd-media-recordings"
-                      label="Media Recordings"
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      id="wd-student-annotation"
-                      label="Student Annotation"
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      id="wd-file-upload"
-                      label="File Uploads"
-                    />
+                    <Form.Check type="checkbox" label="Text Entry" defaultChecked />
+                    <Form.Check type="checkbox" label="Website URL" defaultChecked />
+                    <Form.Check type="checkbox" label="Media Recordings" />
+                    <Form.Check type="checkbox" label="Student Annotation" />
+                    <Form.Check type="checkbox" label="File Uploads" />
                   </div>
                 </Card.Body>
               </Card>
@@ -139,28 +125,38 @@ The landing page should include:
                       defaultValue={{ value: "everyone", label: "Everyone" }}
                       options={[
                         { value: "everyone", label: "Everyone" },
-                        { value: "students only", label: "Students only" },
-                        { value: "TA's", label: "TA's" },
+                        { value: "students", label: "Students only" },
+                        { value: "tas", label: "TA's" },
                       ]}
-                      className="w-100"
                     />
                   </Form.Group>
 
-                  {/* Due */}
-                  <Form.Group className="mb-3" controlId="wd-due-date">
+                  {/* Due Date */}
+                  <Form.Group className="mb-3">
                     <Form.Label>Due</Form.Label>
-                    <Form.Control type="date" defaultValue="2025-09-21" />
+                    <Form.Control
+                      type="date"
+                      defaultValue={assignment.dueDate?.substring(0, 10)}
+                    />
                   </Form.Group>
 
-                  {/* Available From & Until */}
                   <div className="row">
-                    <Form.Group className="col" controlId="wd-available-from">
+                    {/* Available From */}
+                    <Form.Group className="col">
                       <Form.Label>Available from</Form.Label>
-                      <Form.Control type="date" defaultValue="2025-09-17" />
+                      <Form.Control
+                        type="date"
+                        defaultValue={assignment.availableFrom?.substring(0, 10)}
+                      />
                     </Form.Group>
-                    <Form.Group className="col" controlId="wd-available-until">
+
+                    {/* Until */}
+                    <Form.Group className="col">
                       <Form.Label>Until</Form.Label>
-                      <Form.Control type="date" defaultValue="2025-09-21" />
+                      <Form.Control
+                        type="date"
+                        defaultValue={assignment.dueDate?.substring(0, 10)}
+                      />
                     </Form.Group>
                   </div>
                 </Card.Body>

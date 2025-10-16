@@ -1,25 +1,39 @@
+"use client"
 import Link from "next/link";
-export default function CourseNavigation() {
+import {usePathname} from "next/navigation"
+import { ListGroup, ListGroupItem} from "react-bootstrap";
+
+export default function CourseNavigation({ cid }: { cid: string }) {
+  const pathname = usePathname();
+  const links = [
+    { label: "Home",        path: "/Home"},
+    { label: "Modules",     path: "/Modules"},
+    { label: "Piazza",      path: "/Piazza"},
+    { label: "Zoom",        path: "/Zoom"},
+    { label: "Assignments", path: "/Assignments"},
+    { label: "Quizzes",     path: "/Quizzes"},
+    { label: "Grades",      path: "/Grades" },
+    { label: "People",      path: "/People/Table"},
+  ];
   return (
-    <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
-      <Link href="/Courses/1234/Home" id="wd-course-home-link" 
-      className="list-group-item active border-0">Home</Link>
-      <Link href="/Courses/1234/Modules" id="wd-course-modules-link" 
-      className="list-group-item text-danger border-0">Modules
-        </Link>
-      <Link href="/Courses/1234/Piazza" id="wd-course-piazza-link" 
-      className="list-group-item text-danger border-0">Piazza</Link>
-      <Link href="/Courses/1234/Zoom" id="wd-course-zoom-link" 
-      className="list-group-item text-danger border-0">Zoom</Link>
-      <Link href="/Courses/1234/Assignments" id="wd-course-quizzes-link" 
-      className="list-group-item text-danger border-0">
-          Assignments</Link>
-      <Link href="/Courses/1234/Quizzes" id="wd-course-assignments-link" 
-      className="list-group-item text-danger border-0">Quizzes
-        </Link>
-      <Link href="/Courses/1234/Grades" id="wd-course-grades-link" 
-      className="list-group-item text-danger border-0">Grades</Link>
-      <Link href="/Courses/1234/People/Table" id="wd-course-people-link" 
-      className="list-group-item text-danger border-0">People</Link>
-    </div>
+    <ListGroup id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
+      {links.map((link) => {
+        const fullPath = `/Courses/${cid}${link.path}`;
+        const isActive = pathname.startsWith(fullPath);
+;
+
+        return (
+          <ListGroupItem
+            as={Link}
+            key={link.label}
+            href={fullPath}
+            id={`wd-course-${link.label.toLowerCase()}-link`}
+            className={`border-0 list-group-item ${isActive ? "active" : "text-danger"}`}
+            action
+          >
+            {link.label}
+          </ListGroupItem>
+        );
+      })}
+    </ListGroup>
   );}
