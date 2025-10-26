@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -11,6 +11,7 @@ import * as db from "../../../../Database"; // Make sure this points to the righ
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams(); // Course ID and Assignment ID
+  const router = useRouter();
   const assignment = db.assignments.find((a) => a._id === aid);
 
   if (!assignment) {
@@ -169,10 +170,10 @@ export default function AssignmentEditor() {
 
         {/* Buttons */}
         <div className="d-flex justify-content-end gap-2">
-          <Button variant="secondary" id="wd-cancel">
+          <Button variant="secondary" id="wd-cancel" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
             Cancel
           </Button>
-          <Button variant="danger" id="wd-save">
+          <Button variant="danger" id="wd-save" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
             Save
           </Button>
         </div>
