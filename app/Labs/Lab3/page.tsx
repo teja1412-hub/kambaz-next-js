@@ -28,7 +28,6 @@ import FunctionDestructing from "./FunctionDestructing";
 import DestructingImports from "./DestructingImports";
 import Classes from "./Classes";
 import PathParameters from "./PathParameters";
-import AddPathParameters from "./add/[a]/[b]/page";
 import TodoItem from "./todos/TodoItem";
 import TodoList from "./todos/TodoList";
 

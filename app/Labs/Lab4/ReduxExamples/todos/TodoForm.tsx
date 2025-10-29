@@ -1,10 +1,13 @@
+"use client";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, updateTodo, setTodo } from "./todosReducer";
 import { ListGroupItem, Button, FormControl } from "react-bootstrap";
+import { RootState } from "../../store";
+import { Todo } from "./types";
 
 export default function TodoForm() {
-  const { todo } = useSelector((state: any) => state.todosReducer);
+  const todo: Todo = useSelector((state: RootState) => state.todosReducer.todo);
   const dispatch = useDispatch();
 
   return (
