@@ -43,7 +43,7 @@ export default function Signin() {
           </div>
 
           {/* Sign in Link */}
-          <div className="text-left">
+          <div className="text-center">
             <Link id="wd-signin-link" href="Signin">
               Sign in
             </Link>
