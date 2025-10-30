@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
@@ -5,18 +6,77 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Select from "react-select";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "../reducer";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import * as db from "../../../../Database"; // Make sure this points to the right location
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams(); // Course ID and Assignment ID
   const router = useRouter();
-  const assignment = db.assignments.find((a) => a._id === aid);
+  const dispatch = useDispatch();
 
-  if (!assignment) {
-    return <div className="p-4">Assignment not found.</div>;
-  }
+  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
+
+  // If editing, find the assignment, otherwise create empty state for new assignment
+  const existingAssignment = assignments.find((a: any) => a._id === aid);
+
+  const [title, setTitle] = useState(existingAssignment?.title || "");
+  const [description, setDescription] = useState(existingAssignment?.description || "");
+  const [points, setPoints] = useState(existingAssignment?.points || 0);
+  const [group, setGroup] = useState(existingAssignment?.group || "ASSIGNMENTS");
+  const [gradeType, setGradeType] = useState(existingAssignment?.gradeType || "Percentage");
+  const [submissionType, setSubmissionType] = useState(existingAssignment?.submissionType || "Online");
+  const [onlineOptions, setOnlineOptions] = useState(existingAssignment?.onlineOptions || {
+    textEntry: true,
+    websiteURL: true,
+    mediaRecordings: false,
+    studentAnnotation: false,
+    fileUploads: false
+  });
+  const [assignTo, setAssignTo] = useState(existingAssignment?.assignTo || [{ value: "everyone", label: "Everyone" }]);
+
+  const formatDateTime = (dateStr: string | undefined) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+const [dueDate, setDueDate] = useState(formatDateTime(existingAssignment?.dueDate));
+const [availableFrom, setAvailableFrom] = useState(formatDateTime(existingAssignment?.availableFrom));
+const [availableUntil, setAvailableUntil] = useState(formatDateTime(existingAssignment?.dueDate));
+
+
+  const handleSave = () => {
+    const assignmentData = {
+      _id: existingAssignment?._id, // keep the same id if editing
+      course: cid,
+      title,
+      description,
+      points,
+      group,
+      gradeType,
+      submissionType,
+      onlineOptions,
+      assignTo,
+      dueDate,
+      availableFrom,
+      availableUntil
+    };
+
+    if (existingAssignment) {
+      dispatch(updateAssignment(assignmentData));
+    } else {
+      dispatch(addAssignment(assignmentData));
+    }
+
+    router.push(`/Courses/${cid}/Assignments`);
+  };
 
   return (
     <div id="wd-assignments-editor" className="p-4">
@@ -24,7 +84,11 @@ export default function AssignmentEditor() {
         {/* Assignment Name */}
         <Form.Group className="mb-3">
           <Form.Label>Assignment Name</Form.Label>
-          <Form.Control type="text" defaultValue={assignment.title} />
+          <Form.Control
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </Form.Group>
 
         {/* Description */}
@@ -32,7 +96,8 @@ export default function AssignmentEditor() {
           <Form.Control
             as="textarea"
             rows={6}
-            defaultValue={assignment.description}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Group>
 
@@ -46,7 +111,8 @@ export default function AssignmentEditor() {
               <Form.Control
                 id="wd-points"
                 type="number"
-                defaultValue={assignment.points}
+                value={points}
+                onChange={(e) => setPoints(Number(e.target.value))}
               />
             </div>
           </div>
@@ -59,7 +125,7 @@ export default function AssignmentEditor() {
               Assignment Group
             </Form.Label>
             <div className="col">
-              <Form.Select id="wd-group" defaultValue="ASSIGNMENTS">
+              <Form.Select id="wd-group" value={group} onChange={(e) => setGroup(e.target.value)}>
                 <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                 <option value="QUIZZES">QUIZZES</option>
                 <option value="EXAMS">EXAMS</option>
@@ -76,7 +142,11 @@ export default function AssignmentEditor() {
               Display Grade as
             </Form.Label>
             <div className="col">
-              <Form.Select id="wd-display-grade-as" defaultValue="Percentage">
+              <Form.Select
+                id="wd-display-grade-as"
+                value={gradeType}
+                onChange={(e) => setGradeType(e.target.value)}
+              >
                 <option value="Percentage">Percentage</option>
                 <option value="GPA">GPA</option>
                 <option value="Alphabet">Alphabet</option>
@@ -92,18 +162,47 @@ export default function AssignmentEditor() {
             <div className="col">
               <Card>
                 <Card.Body>
-                  <Form.Select defaultValue="Online" className="mb-3">
+                  <Form.Select
+                    value={submissionType}
+                    onChange={(e) => setSubmissionType(e.target.value)}
+                    className="mb-3"
+                  >
                     <option value="Online">Online</option>
                     <option value="Offline">Offline</option>
                   </Form.Select>
 
                   <Form.Label>Online Entry Options</Form.Label>
                   <div>
-                    <Form.Check type="checkbox" label="Text Entry" defaultChecked />
-                    <Form.Check type="checkbox" label="Website URL" defaultChecked />
-                    <Form.Check type="checkbox" label="Media Recordings" />
-                    <Form.Check type="checkbox" label="Student Annotation" />
-                    <Form.Check type="checkbox" label="File Uploads" />
+                    <Form.Check
+                      type="checkbox"
+                      label="Text Entry"
+                      checked={onlineOptions.textEntry}
+                      onChange={() => setOnlineOptions({ ...onlineOptions, textEntry: !onlineOptions.textEntry })}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Website URL"
+                      checked={onlineOptions.websiteURL}
+                      onChange={() => setOnlineOptions({ ...onlineOptions, websiteURL: !onlineOptions.websiteURL })}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Media Recordings"
+                      checked={onlineOptions.mediaRecordings}
+                      onChange={() => setOnlineOptions({ ...onlineOptions, mediaRecordings: !onlineOptions.mediaRecordings })}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Student Annotation"
+                      checked={onlineOptions.studentAnnotation}
+                      onChange={() => setOnlineOptions({ ...onlineOptions, studentAnnotation: !onlineOptions.studentAnnotation })}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="File Uploads"
+                      checked={onlineOptions.fileUploads}
+                      onChange={() => setOnlineOptions({ ...onlineOptions, fileUploads: !onlineOptions.fileUploads })}
+                    />
                   </div>
                 </Card.Body>
               </Card>
@@ -118,12 +217,12 @@ export default function AssignmentEditor() {
             <div className="col">
               <Card>
                 <Card.Body>
-                  {/* Assign To */}
                   <Form.Group className="mb-3">
                     <Form.Label>Assign to</Form.Label>
                     <Select
                       isMulti
-                      defaultValue={{ value: "everyone", label: "Everyone" }}
+                      value={assignTo}
+                      onChange={(values) => setAssignTo(values as any)}
                       options={[
                         { value: "everyone", label: "Everyone" },
                         { value: "students", label: "Students only" },
@@ -132,31 +231,31 @@ export default function AssignmentEditor() {
                     />
                   </Form.Group>
 
-                  {/* Due Date */}
                   <Form.Group className="mb-3">
                     <Form.Label>Due</Form.Label>
                     <Form.Control
-                      type="date"
-                      defaultValue={assignment.dueDate?.substring(0, 10)}
+                      type="datetime-local"
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
                     />
                   </Form.Group>
 
                   <div className="row">
-                    {/* Available From */}
                     <Form.Group className="col">
                       <Form.Label>Available from</Form.Label>
                       <Form.Control
-                        type="date"
-                        defaultValue={assignment.availableFrom?.substring(0, 10)}
+                        type="datetime-local"
+                        value={availableFrom}
+                        onChange={(e) => setAvailableFrom(e.target.value)}
                       />
                     </Form.Group>
 
-                    {/* Until */}
                     <Form.Group className="col">
                       <Form.Label>Until</Form.Label>
                       <Form.Control
-                        type="date"
-                        defaultValue={assignment.dueDate?.substring(0, 10)}
+                        type="datetime-local"
+                        value={availableUntil}
+                        onChange={(e) => setAvailableUntil(e.target.value)}
                       />
                     </Form.Group>
                   </div>
@@ -173,7 +272,7 @@ export default function AssignmentEditor() {
           <Button variant="secondary" id="wd-cancel" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
             Cancel
           </Button>
-          <Button variant="danger" id="wd-save" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
+          <Button variant="danger" id="wd-save" onClick={handleSave}>
             Save
           </Button>
         </div>

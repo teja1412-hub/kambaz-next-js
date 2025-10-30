@@ -1,55 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import Link from "next/link";
-import { Form, Button } from "react-bootstrap";
+import { redirect } from "next/dist/client/components/navigation";
+import { setCurrentUser } from "../reducer";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import * as db from "../../Database";
+import { FormControl, Button } from "react-bootstrap";
 
 export default function Signin() {
+ const [credentials, setCredentials] = useState<any>({});
+ const dispatch = useDispatch();
+ const signin = () => {
+   const customUser = db.user.find(
+     (u: any) =>
+       u.username === credentials.username &&
+       u.password === credentials.password
+   );
+   if (!customUser) return;
+   dispatch(setCurrentUser(customUser));
+   redirect("/Dashboard");
+ };
+
   return (
-    <div className="d-flex vh-100 p-4">
-      <div style={{ width: "300px" }}>
-        <h3 className="mb-4">Sign In</h3>
-        <Form>
-          {/* Username */}
-          <Form.Group className="mb-3" controlId="formUsername">
-            {/* <Form.Label>Username</Form.Label> */}
-            <Form.Control
-              type="text"
-              placeholder="username"
-              defaultValue="john.Wonderland"
-            />
-          </Form.Group>
-
-          {/* Password */}
-          <Form.Group className="mb-3" controlId="formPassword">
-            {/* <Form.Label>Password</Form.Label> */}
-            <Form.Control
-              type="password"
-              placeholder="password"
-              defaultValue="123@abc"
-            />
-          </Form.Group>
-
-          {/* Sign in Button */}
-          <div className="d-grid gap-2 mb-3">
-            <Button
-              id="wd-signin-btn"
-              variant="primary"
-              type="submit"
-              // as={Link}
-              href="/Dashboard"
-            >
-              Sign In
-            </Button>
-          </div>
-
-          {/* Sign up Link */}
-          <div className="text-left">
-            <Link id="wd-signup-link" href="Signup">
-              Sign up
-            </Link>
-          </div>
-        </Form>
-      </div>
+    <div id="wd-signin-screen">
+      <h1>Sign in</h1>
+      <FormControl defaultValue={credentials.username}
+             onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+             className="mb-2" placeholder="username" id="wd-username" />
+      <FormControl defaultValue={credentials.password}
+             onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+             className="mb-2" placeholder="password" type="password" id="wd-password" />
+      <Button onClick={signin} id="wd-signin-btn" className="w-100" > Sign in </Button>
+      <Link id="wd-signup-link" href="/Kambaz/Account/Signup"> Sign up </Link>
     </div>
-  );
-}
+);}

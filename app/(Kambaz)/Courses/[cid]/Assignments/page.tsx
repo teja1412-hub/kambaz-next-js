@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
@@ -6,12 +7,11 @@ import { BsGripVertical } from "react-icons/bs";
 import { FaRegFileAlt } from "react-icons/fa";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import SubAssignmentControlButtons from "./SubAssignmentControlButtons";
-import { useParams } from "next/navigation";
-import * as db from "../../../Database"; // Assume it exports assignments data
-import React from "react";
 import AssignementControls from "./AssignmentControls";
+import { useParams} from "next/navigation";
+import { useSelector, useDispatch} from "react-redux";
+import { deleteAssignment } from "./reducer";
 
-// Helper function to format dates nicely
 function formatDate(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
     month: "short",
@@ -26,10 +26,12 @@ function formatDate(dateString: string) {
 
 export default function Assignments() {
   const { cid } = useParams();
-  const { assignments } = db;
+  const assignments = useSelector(
+    (state: any) => state.assignmentsReducer.assignments
+  );
 
-  // Filter assignments by course id (cid)
-  const courseAssignments = assignments.filter((a) => a.course === cid);
+  const courseAssignments = assignments.filter((a: any) => a.course === cid);
+  const dispatch = useDispatch();
 
   return (
     <div id="wd-assignments-quizzes-exams-projects">
@@ -40,13 +42,10 @@ export default function Assignments() {
         <ListGroup className="rounded-0" id="wd-modules">
           <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
             <div className="wd-title p-2 ps-2 bg-secondary d-flex justify-content-between align-items-center">
-              {/* LEFT side: Icon + Title */}
               <div className="d-flex align-items-center">
                 <BsGripVertical className="me-2 fs-3" />
                 ASSIGNMENTS
               </div>
-
-              {/* RIGHT side: 40% box + controls */}
               <div className="d-flex align-items-center">
                 <p
                   className="wd-rounded-corners-all-around wd-border-thin wd-border-black wd-border-solid wd-percentage-box mb-0 me-3"
@@ -59,7 +58,7 @@ export default function Assignments() {
             </div>
 
             <ListGroup className="wd-lessons rounded-0 ">
-              {courseAssignments.map((assignment) => (
+              {courseAssignments.map((assignment: any) => (
                 <ListGroupItem
                   key={assignment._id}
                   className="wd-lesson px-3 ps-1"
@@ -82,7 +81,11 @@ export default function Assignments() {
                         <b>Due</b> {formatDate(assignment.dueDate)} | {assignment.points} pts
                       </div>
                     </div>
-                    <SubAssignmentControlButtons />
+                    <SubAssignmentControlButtons assignmentId={assignment._id}
+                          deleteAssignment={(assignmentId) => {
+                            dispatch(deleteAssignment(assignmentId));
+                          }}
+                    />
                   </div>
                 </ListGroupItem>
               ))}
