@@ -8,9 +8,10 @@ import { FaRegFileAlt } from "react-icons/fa";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import SubAssignmentControlButtons from "./SubAssignmentControlButtons";
 import AssignementControls from "./AssignmentControls";
-import { useParams} from "next/navigation";
-import { useSelector, useDispatch} from "react-redux";
+import { useParams } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
 import { deleteAssignment } from "./reducer";
+import { useState } from "react";
 
 function formatDate(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
@@ -33,12 +34,60 @@ export default function Assignments() {
   const courseAssignments = assignments.filter((a: any) => a.course === cid);
   const dispatch = useDispatch();
 
+  // New state for groups and search
+const [groups, setGroups] = useState<{ id: string; name: string; percent: number }[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const addGroup = (name: string, percent: number) => {
+  const totalPercent = groups.reduce((sum, g) => sum + g.percent, 0);
+  if (totalPercent + percent > 100) {
+    alert("Total percentage cannot exceed 100%");
+    return;
+  }
+
+  const newGroup = { id: Date.now().toString(), name, percent };
+  setGroups([...groups, newGroup]);
+};
+
+
+  const filteredAssignments = courseAssignments.filter((a: any) =>
+    a.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div id="wd-assignments-quizzes-exams-projects">
       <div id="wd-assignments">
-        <AssignementControls />
+        <AssignementControls
+          courseId={cid}
+          addGroup={addGroup}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          groups={groups}
+        />
         <br />
         <br />
+
+        {/* Render Groups */}
+        {groups.map((group) => (
+          <ListGroupItem key={group.id} className="wd-module p-0 mb-5 fs-5 border-gray">
+            <div className="wd-title p-2 ps-2 bg-secondary d-flex justify-content-between align-items-center">
+              <div className="d-flex align-items-center">
+                <BsGripVertical className="me-2 fs-3" />
+                {group.name}
+              </div>
+              <div className="d-flex align-items-center">
+                <p
+                  className="wd-rounded-corners-all-around wd-border-thin wd-border-black wd-border-solid wd-percentage-box mb-0 me-3"
+                  style={{ whiteSpace: "nowrap" }}
+                >
+                  {group.percent}% of Total
+                </p>
+                <AssignmentControlButtons courseId={cid}/>
+              </div>
+            </div>
+          </ListGroupItem>
+        ))}
+
         <ListGroup className="rounded-0" id="wd-modules">
           <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
             <div className="wd-title p-2 ps-2 bg-secondary d-flex justify-content-between align-items-center">
@@ -53,12 +102,12 @@ export default function Assignments() {
                 >
                   40% of Total
                 </p>
-                <AssignmentControlButtons />
+                <AssignmentControlButtons courseId={cid}/>
               </div>
             </div>
 
             <ListGroup className="wd-lessons rounded-0 ">
-              {courseAssignments.map((assignment: any) => (
+              {filteredAssignments.map((assignment: any) => (
                 <ListGroupItem
                   key={assignment._id}
                   className="wd-lesson px-3 ps-1"
@@ -81,10 +130,11 @@ export default function Assignments() {
                         <b>Due</b> {formatDate(assignment.dueDate)} | {assignment.points} pts
                       </div>
                     </div>
-                    <SubAssignmentControlButtons assignmentId={assignment._id}
-                          deleteAssignment={(assignmentId) => {
-                            dispatch(deleteAssignment(assignmentId));
-                          }}
+                    <SubAssignmentControlButtons
+                      assignmentId={assignment._id}
+                      deleteAssignment={(assignmentId) => {
+                        dispatch(deleteAssignment(assignmentId));
+                      }}
                     />
                   </div>
                 </ListGroupItem>
