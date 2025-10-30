@@ -63,7 +63,7 @@ export default function Signin() {
 
           {/* Sign up Link */}
           <div className="text-center">
-            <Link id="wd-signup-link" href="/Kambaz/Account/Signup">
+            <Link id="wd-signup-link" href="Signup">
               Sign up
             </Link>
           </div>
