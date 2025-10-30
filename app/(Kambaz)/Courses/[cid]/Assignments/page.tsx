@@ -27,6 +27,7 @@ function formatDate(dateString: string) {
 
 export default function Assignments() {
   const { cid } = useParams();
+
   const assignments = useSelector(
     (state: any) => state.assignmentsReducer.assignments
   );
@@ -53,12 +54,16 @@ const [groups, setGroups] = useState<{ id: string; name: string; percent: number
   const filteredAssignments = courseAssignments.filter((a: any) =>
     a.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  const courseId = Array.isArray(cid) ? cid[0] : cid;
+  if (!courseId) {
+    // Handles case when cid is missing in the URL
+    return <div>Course not found!</div>;
+  }
   return (
     <div id="wd-assignments-quizzes-exams-projects">
       <div id="wd-assignments">
         <AssignementControls
-          courseId={cid}
+          courseId={courseId}
           addGroup={addGroup}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -82,7 +87,7 @@ const [groups, setGroups] = useState<{ id: string; name: string; percent: number
                 >
                   {group.percent}% of Total
                 </p>
-                <AssignmentControlButtons courseId={cid}/>
+                <AssignmentControlButtons courseId={courseId}/>
               </div>
             </div>
           </ListGroupItem>
@@ -102,7 +107,7 @@ const [groups, setGroups] = useState<{ id: string; name: string; percent: number
                 >
                   40% of Total
                 </p>
-                <AssignmentControlButtons courseId={cid}/>
+                <AssignmentControlButtons courseId={courseId}/>
               </div>
             </div>
 
