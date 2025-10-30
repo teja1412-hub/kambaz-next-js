@@ -36,6 +36,12 @@ export default function Dashboard() {
     image: "/images/reactJs.png",
     description: "New Description",
   });
+
+  if (!currentUser) {
+    // If currentUser is not available, show loading or fallback state
+    return <div>Loading...</div>;
+  }
+  
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
