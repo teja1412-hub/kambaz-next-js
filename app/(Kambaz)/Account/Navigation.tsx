@@ -9,7 +9,7 @@ export default function AccountNavigation() {
   const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
  const pathname = usePathname();
  return (
-   <Nav variant="pills">
+   <Nav variant="pills" id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
      {links.map((link) => (
        <NavItem key={link}>
          <NavLink as={Link} href={link} active={pathname.endsWith(link.toLowerCase())}>
