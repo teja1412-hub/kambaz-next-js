@@ -19,7 +19,7 @@ export default function AccountNavigation() {
       variant="pills"
     >
       {links.map((link) => {
-        const isActive = pathname.endsWith(link.toLowerCase());
+        const isActive = pathname.endsWith(link);
         return (
           <NavItem key={link}>
             <NavLink
