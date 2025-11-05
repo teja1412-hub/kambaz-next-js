@@ -25,17 +25,17 @@ export default function AssignmentEditor() {
   const [title, setTitle] = useState(existingAssignment?.title || "");
   const [description, setDescription] = useState(existingAssignment?.description || "");
   const [points, setPoints] = useState(existingAssignment?.points || 0);
-  const [group, setGroup] = useState(existingAssignment?.group || "ASSIGNMENTS");
-  const [gradeType, setGradeType] = useState(existingAssignment?.gradeType || "Percentage");
-  const [submissionType, setSubmissionType] = useState(existingAssignment?.submissionType || "Online");
-  const [onlineOptions, setOnlineOptions] = useState(existingAssignment?.onlineOptions || {
+  const [group, setGroup] = useState("ASSIGNMENTS");
+  const [gradeType, setGradeType] = useState("Percentage");
+  const [submissionType, setSubmissionType] = useState("Online");
+  const [onlineOptions, setOnlineOptions] = useState({
     textEntry: true,
     websiteURL: true,
     mediaRecordings: false,
     studentAnnotation: false,
     fileUploads: false
   });
-  const [assignTo, setAssignTo] = useState(existingAssignment?.assignTo || [{ value: "everyone", label: "Everyone" }]);
+  const [assignTo, setAssignTo] = useState([{ value: "everyone", label: "Everyone" }]);
 
   const formatDateTime = (dateStr: string | undefined) => {
   if (!dateStr) return "";
