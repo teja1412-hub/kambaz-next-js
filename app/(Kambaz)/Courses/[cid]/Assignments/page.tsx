@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
@@ -10,6 +9,7 @@ import SubAssignmentControlButtons from "./SubAssignmentControlButtons";
 import AssignementControls from "./AssignmentControls";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
 import { deleteAssignment } from "./reducer";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ export default function Assignments() {
   const { cid } = useParams();
 
   const assignments = useSelector(
-    (state: any) => state.assignmentsReducer.assignments
+    (state: RootState) => state.assignmentsReducer.assignments
   );
 
   const courseAssignments = assignments.filter((a: any) => a.course === cid);

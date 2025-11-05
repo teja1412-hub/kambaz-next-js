@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
+import {RootState} from "../store";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
@@ -19,7 +20,7 @@ import {
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { courses } = useSelector((state: any) => state.coursesReducer);
+  const { courses } = useSelector((state: RootState) => state.coursesReducer);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const enrollmentsState = useSelector(
     (state: any) => state.enrollmentsReducer.enrollments
@@ -39,7 +40,7 @@ export default function Dashboard() {
 
   if (!currentUser) {
     // If currentUser is not available, show loading or fallback state
-    return <div>Loading...</div>;
+    return <div>Seems you have been logged out! Please signIn again.</div>;
   }
   
   return (

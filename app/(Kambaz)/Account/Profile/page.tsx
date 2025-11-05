@@ -3,12 +3,15 @@
 import { redirect } from "next/dist/client/components/navigation";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store";
 import { setCurrentUser } from "../reducer";
 import { Button, FormControl } from "react-bootstrap";
+
 export default function Profile() {
  const [profile, setProfile] = useState<any>({});
  const dispatch = useDispatch();
- const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+ const { currentUser } = useSelector((state: RootState) => state.accountReducer);
  const fetchProfile = () => {
    if (!currentUser) return redirect("/Account/Signin");
    setProfile(currentUser);

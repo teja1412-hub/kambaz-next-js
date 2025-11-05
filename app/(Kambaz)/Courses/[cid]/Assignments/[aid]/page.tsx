@@ -6,8 +6,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Select from "react-select";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 import { addAssignment, updateAssignment } from "../reducer";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,7 +17,7 @@ export default function AssignmentEditor() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
+  const assignments = useSelector((state: RootState) => state.assignmentsReducer.assignments);
 
   // If editing, find the assignment, otherwise create empty state for new assignment
   const existingAssignment = assignments.find((a: any) => a._id === aid);

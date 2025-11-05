@@ -3,29 +3,12 @@
 import { ReactNode, useState } from "react";
 import CourseNavigation from "./Navigation";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import { useParams } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
 import Breadcrumb from "./Breadcrumb";
 
-interface Course {
-  _id: string;
-  code: string;
-  title: string;
-  semester?: string;
-  startDate?: string;
-  endDate?: string;
-  image?: string;
-  description?: string;
-}
-
-interface CoursesState {
-  courses: Course[];
-}
-
-interface RootState {
-  coursesReducer: CoursesState;
-}
 
 export default function CoursesLayout({ children }: { children: ReactNode }) {
   const { cid } = useParams<{ cid: string }>();

@@ -4,7 +4,7 @@ import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
 import { useSelector } from "react-redux";
 import { ListGroup } from "react-bootstrap";
-import { RootState } from "../../store"; // path to your store
+import { RootState } from "../../store";
 import { Todo } from "./types";
 
 export default function TodoList() {

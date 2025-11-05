@@ -5,14 +5,15 @@ import { useRouter, useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import Modules from "../Modules/page";
 import CourseStatus from "./Status";
+import { RootState } from "../../../store";
 
 export default function Home() {
   const router = useRouter();
   const params = useParams();
-  const courseId = params?.courseId as string;
+  const courseId = params?.cid as string;
 
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const enrollments = useSelector((state: any) => state.enrollments.enrollments);
+  const enrollments = useSelector((state: RootState) => state.enrollmentsReducer.enrollments);
 
   // Check if current user is enrolled in this course
   const isEnrolled = enrollments.some(

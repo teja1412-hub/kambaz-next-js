@@ -1,3 +1,4 @@
+import { RootState } from "./store";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { useSelector } from "react-redux";
 interface Todo {
@@ -5,11 +6,8 @@ interface Todo {
   title: string;
 }
 
-interface TodosState {
-  todos: Todo[];
-}
 export default function ArrayStateVariable() {
-  const { todos } = useSelector((state: { todosReducer: TodosState }) => state.todosReducer);
+  const { todos } = useSelector((state: RootState) => state.todosReducer);
  return (
   <div id="wd-array-state-variables">
    <h2>Array State Variable</h2>
