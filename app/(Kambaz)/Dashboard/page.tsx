@@ -19,7 +19,7 @@ import {
 } from "react-bootstrap";
 
 export default function Dashboard() {
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const enrollmentsState = useSelector(
