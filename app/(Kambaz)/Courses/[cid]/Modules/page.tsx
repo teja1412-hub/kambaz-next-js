@@ -8,7 +8,7 @@ import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { useState } from "react";
 import {RootState} from "../../../store"
-import { addModule, editModule, updateModule, deleteModule }
+import { addModule, editModule, updateModule, deleteModule, addLesson }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -45,7 +45,14 @@ export default function Modules() {
                   deleteModule={(moduleId) => {
                     dispatch(deleteModule(moduleId));
                   }}
-                  editModule={(moduleId) => dispatch(editModule(moduleId))} />
+                  editModule={(moduleId) => dispatch(editModule(moduleId))} 
+                  addLessonToModule={(moduleId, lessonName) => {
+                    // Dispatch action to add lesson to module
+                    dispatch(
+                      addLesson({ moduleId, name: lessonName, course: cid }) // define addLesson in your reducer
+                    );
+                  }}
+                  />
                 <BsGripVertical className="me-2 fs-3" />
                 {!module.editing && module.name}
                 {module.editing && (

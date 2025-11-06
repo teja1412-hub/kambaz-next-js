@@ -3,13 +3,52 @@ import GreenCheckmark from "./GreenCheckmark";
 import { BsPlus } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa6";
 import { FaPencil } from "react-icons/fa6";
-export default function ModuleControlButtons(
-  { moduleId, deleteModule, editModule}: { moduleId: string; deleteModule: (moduleId: string) => void; editModule: (moduleId: string) => void} ) {
+import LessonEditor from "./LessonEditor";
+import { useState } from "react";
+
+export default function ModuleControlButtons({
+  moduleId,
+  deleteModule,
+  editModule,
+  addLessonToModule,
+}: {
+  moduleId: string;
+  deleteModule: (moduleId: string) => void;
+  editModule: (moduleId: string) => void;
+  addLessonToModule: (moduleId: string, lessonName: string) => void;
+}) {
+  const [showLessonModal, setShowLessonModal] = useState(false);
+  const [lessonName, setLessonName] = useState("");
+
   return (
     <div className="float-end">
-      <FaPencil onClick={() => editModule(moduleId)} className="text-primary me-3" />
-      <FaTrash className="text-danger me-2 mb-1" onClick={() => deleteModule(moduleId)}/>
+      <FaPencil
+        onClick={() => editModule(moduleId)}
+        className="text-primary me-3"
+      />
+      <FaTrash
+        className="text-danger me-2 mb-1"
+        onClick={() => deleteModule(moduleId)}
+      />
       <GreenCheckmark />
-      <BsPlus/>
+      <BsPlus
+        className="ms-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => setShowLessonModal(true)}
+      />
       <IoEllipsisVertical className="fs-4" />
-    </div> );}
+
+      <LessonEditor
+        show={showLessonModal}
+        handleClose={() => setShowLessonModal(false)}
+        dialogTitle="Add Lesson"
+        lessonName={lessonName}
+        setLessonName={setLessonName}
+        addLesson={() => {
+          addLessonToModule(moduleId, lessonName);
+          setLessonName("");
+        }}
+      />
+    </div>
+  );
+}

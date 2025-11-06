@@ -24,7 +24,7 @@ export default function AccountNavigation() {
           <NavItem key={link}>
             <NavLink
               as={Link}
-              href={`/${link}`}
+              href={`${link}`}
               id={`wd-course-${link.toLowerCase()}-link`}
               className={`list-group-item ${
                 isActive ? "active" : "text-danger"

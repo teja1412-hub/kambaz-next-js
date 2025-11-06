@@ -32,8 +32,22 @@ const modulesSlice = createSlice({
         m._id === moduleId ? { ...m, editing: true } : m
       ) as any;
     },
+    // Example reducer logic
+    addLesson: (state, action) => {
+      const { moduleId, name } = action.payload;
+      const foundModule = state.modules.find((m) => m._id === moduleId);
+      if (foundModule) {
+        if (!foundModule.lessons) foundModule.lessons = [];
+        foundModule.lessons.push({
+          _id: Date.now().toString(),
+          name,
+          description: "", // default empty description
+          module: moduleId,});
+      }
+    }
+
   },
 });
-export const { addModule, deleteModule, updateModule, editModule } =
+export const { addModule, deleteModule, updateModule, editModule, addLesson} =
   modulesSlice.actions;
 export default modulesSlice.reducer;
