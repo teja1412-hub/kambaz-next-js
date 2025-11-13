@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentUser: {
-    _id: "123"
+    _id: "123",
+    role: "STUDENT"
   },
 };
 const accountSlice = createSlice({
