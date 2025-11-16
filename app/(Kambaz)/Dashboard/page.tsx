@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
-import {RootState} from "../store";
+import { useEffect, useState, useCallback } from "react";
+import { RootState } from "../store";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
+import {
+  addNewCourse,
+  deleteCourse,
+  updateCourse,
+  setCourses,
+} from "../Courses/reducer";
 import { enrollCourse, unenrollCourse } from "../Enrollments/reducer";
 import {
   Row,
@@ -17,9 +22,12 @@ import {
   Card,
   FormControl,
 } from "react-bootstrap";
+import * as client from "../Courses/client";
 
 export default function Dashboard() {
-  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  );
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const enrollmentsState = useSelector(
@@ -37,12 +45,55 @@ export default function Dashboard() {
     image: "/images/reactJs.png",
     description: "New Description",
   });
+  const fetchCourses = useCallback(async () => {
+    try {
+      const courses = await client.findMyCourses();
+      dispatch(setCourses(courses));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
 
-  if (!currentUser) {
-    // If currentUser is not available, show loading or fallback state
-    return <div>Seems you have been logged out! Please signIn again.</div>;
-  }
-  
+  const fetchAllCoursesFromServer = useCallback(async () => {
+    const courses = await client.fetchAllCourses();
+    dispatch(setCourses(courses));
+  }, [dispatch]);
+
+  const onAddNewCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    dispatch(setCourses([...courses, newCourse]));
+  };
+
+  const onDeleteCourse = async (courseId: string) => {
+    const status = await client.deleteCourse(courseId);
+    dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+  };
+
+  const onUpdateCourse = async () => {
+    await client.updateCourse(course);
+    dispatch(
+      setCourses(
+        courses.map((c) => {
+          if (c._id === course._id) {
+            return course;
+          } else {
+            return c;
+          }
+        })
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    if (showAllCourses) {
+      fetchAllCoursesFromServer();
+    } else {
+      fetchCourses();
+    }
+  }, [currentUser, showAllCourses, fetchCourses, fetchAllCoursesFromServer]);
+
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -51,16 +102,10 @@ export default function Dashboard() {
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="mb-0">New Course</h5>
             <div className="d-flex gap-2">
-              <Button
-                className="btn btn-warning"
-                onClick={() => dispatch(updateCourse(course))}
-              >
+              <Button className="btn btn-warning" onClick={onUpdateCourse}>
                 Update
               </Button>
-              <Button
-                className="btn btn-primary"
-                onClick={() => dispatch(addNewCourse(course))}
-              >
+              <Button className="btn btn-primary" onClick={onAddNewCourse}>
                 Add
               </Button>
             </div>
@@ -89,15 +134,7 @@ export default function Dashboard() {
         <h2 id="wd-dashboard-published">
           {" "}
           Published Courses
-          {showAllCourses
-            ? ` (${courses.length})`
-            : ` (${
-                courses.filter((c: any) =>
-                  enrollmentsState.some(
-                    (e: any) => e.user === currentUser._id && e.course === c._id
-                  )
-                ).length
-              })`}
+          {` (${courses.length})`}
         </h2>
 
         <Button
@@ -111,16 +148,7 @@ export default function Dashboard() {
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} lg={4} className="g-4">
-          {(showAllCourses
-            ? courses
-            : courses.filter((course: any) =>
-                enrollmentsState.some(
-                  (enrollment: any) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-                )
-              )
-          ).map((course: any) => (
+          {courses.map((course: any) => (
             <Col
               className="wd-dashboard-course"
               key={course._id}
@@ -167,7 +195,7 @@ export default function Dashboard() {
                         <Button
                           onClick={(event) => {
                             event.preventDefault();
-                            dispatch(deleteCourse(course._id));
+                            onDeleteCourse(course._id);
                           }}
                           className="btn btn-danger"
                         >
