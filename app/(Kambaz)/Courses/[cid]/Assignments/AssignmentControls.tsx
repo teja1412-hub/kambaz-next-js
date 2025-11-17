@@ -4,14 +4,14 @@ import { InputGroup, FormControl, Button } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import GroupEditor from "./GroupEditor"; // similar to ModuleEditor
+import GroupEditor from "./GroupEditor";
 
 export default function AssignementControls({
   courseId,
   addGroup,
   searchTerm,
   setSearchTerm,
-  groups, // pass current groups to validate total percent
+  groups,
 }: {
   courseId: string;
   addGroup: (name: string, percent: number) => void;

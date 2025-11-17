@@ -5,7 +5,7 @@ import { BsPlus } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 
 export default function AssignmentControlButtons({ courseId }: { courseId: string }) {
-  const router = useRouter(); // use hook
+  const router = useRouter();
 
   return (
     <div className="float-end d-flex align-items-center gap-2">
