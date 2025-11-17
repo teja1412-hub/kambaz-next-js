@@ -2,30 +2,42 @@
 "use client";
 import * as client from "../client";
 import Link from "next/link";
-import { redirect } from "next/dist/client/components/navigation";
+import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-// import * as db from "../../Database";
 import { Form, Button } from "react-bootstrap";
 
 export default function Signin() {
-  const [credentials, setCredentials] = useState<any>({});
+  const [credentials, setCredentials] = useState({ 
+    username: "", 
+    password: "" 
+  });
+  const [error, setError] = useState("");
+  const router = useRouter();
   const dispatch = useDispatch();
 
-const signin = async () => {
-    const user =  await client.signin(credentials);
-    if (!user) return;
-    dispatch(setCurrentUser(user));
-    redirect("/Dashboard");
+  const signin = async () => {
+    try {
+      console.log("Attempting signin with:", credentials);
+      const user = await client.signin(credentials);
+      console.log("Signin successful, user:", user);
+      
+      dispatch(setCurrentUser(user));
+      console.log("Redux updated, navigating to Dashboard");
+      
+      router.push("/Dashboard");
+    } catch (err: any) {
+      console.error("Signin error:", err);
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
     <div className="d-flex vh-100 p-4">
       <div style={{ width: "300px" }}>
         <h3 className="mb-4">Sign In</h3>
-        <Form onSubmit={signin}>
-          {/* Username */}
+        <Form>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Control
               type="text"
@@ -37,7 +49,6 @@ const signin = async () => {
             />
           </Form.Group>
 
-          {/* Password */}
           <Form.Group className="mb-3" controlId="formPassword">
             <Form.Control
               type="password"
@@ -49,14 +60,16 @@ const signin = async () => {
             />
           </Form.Group>
 
-          {/* Sign in Button */}
           <div className="d-grid gap-2 mb-3">
-            <Button id="wd-signin-btn" variant="primary" type="submit">
+            <Button
+              id="wd-signin-btn"
+              variant="primary"
+              onClick={signin}
+            >
               Sign In
             </Button>
           </div>
 
-          {/* Sign up Link */}
           <div className="text-center">
             <Link id="wd-signup-link" href="Signup">
               Sign up

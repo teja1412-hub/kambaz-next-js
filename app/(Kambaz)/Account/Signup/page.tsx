@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
@@ -11,16 +11,28 @@ import * as client from "../client";
 
 export default function Signin() {
   const [user, setUser] = useState<any>({});
+    const [error, setError] = useState("");
+  const router = useRouter();
   const dispatch = useDispatch();
+
   const signup = async () => {
-    const currentUser = await client.signup(user);
-    dispatch(setCurrentUser(currentUser));
-    redirect("/Profile");
+    try {
+      const currentUser = await client.signup(user);
+      dispatch(setCurrentUser(currentUser));
+      router.push("/Account/Profile");
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Signup failed");
+    }
   };
   return (
     <div className="d-flex vh-100 p-4">
       <div style={{ width: "300px" }}>
         <h3 className="mb-4">Sign Up</h3>
+        {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
         <Form>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Control
@@ -42,8 +54,6 @@ export default function Signin() {
             <Button
               id="wd-signup-btn"
               variant="primary"
-              type="submit"
-              href="Profile"
               onClick={signup} 
             >
               Sign up

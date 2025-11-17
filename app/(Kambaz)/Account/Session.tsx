@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
 import * as client from "./client";
 import { useEffect, useState } from "react";
 import { setCurrentUser } from "./reducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 export default function Session({ children }: { children: any }) {
   const [pending, setPending] = useState(true);
   const dispatch = useDispatch();
+
   const fetchProfile = async () => {
     try {
       const currentUser = await client.profile();
@@ -16,9 +19,17 @@ export default function Session({ children }: { children: any }) {
     setPending(false);
   };
   useEffect(() => {
-    fetchProfile();
+      fetchProfile();
   }, []);
-  if (!pending) {
-    return children;
+
+  if (pending) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
+    return children;
 }

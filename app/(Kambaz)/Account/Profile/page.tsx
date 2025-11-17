@@ -1,73 +1,135 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { redirect } from "next/dist/client/components/navigation";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { setCurrentUser } from "../reducer";
 import { Button, FormControl } from "react-bootstrap";
 import * as client from "../client";
+import { setEnrollments } from "../../Enrollments/reducer";
+import { setCourses } from "../../Courses/reducer";
 
 export default function Profile() {
- const [profile, setProfile] = useState<any>({});
- const dispatch = useDispatch();
- const { currentUser } = useSelector((state: RootState) => state.accountReducer);
- const fetchProfile = () => {
-   if (!currentUser) return redirect("/Account/Signin");
-   setProfile(currentUser);
- };
- const signout = () => async () => {
-    await client.signout();
-   dispatch(setCurrentUser(null));
-   redirect("/Account/Signin");
- };
- const updateProfile = async () => {
-    const updatedProfile = await client.updateUser(profile);
-    dispatch(setCurrentUser(updatedProfile));
+  const [profile, setProfile] = useState<any>({});
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  )
+
+  const fetchProfile = async () => {
+    try {
+      const account = await client.profile();
+      dispatch(setCurrentUser(account));
+      setProfile(account);
+    } catch (err) {
+      router.push("/Account/Signin");
+    }
   };
- useEffect(() => {
-   fetchProfile();
- }, []);
- return (
-   <div className="wd-profile-screen">
-     <h3>Profile</h3>
-     {profile && (
-       <div>
-         <FormControl id="wd-username" className="mb-2"
-           defaultValue={profile.username}
-           onChange={(e) => setProfile({ ...profile, username: e.target.value }) }
-         />
-         <FormControl id="wd-password" className="mb-2"
-           defaultValue={profile.password}
-           onChange={(e) => setProfile({ ...profile, password: e.target.value }) }
-         />
-         <FormControl id="wd-firstname" className="mb-2"
-           defaultValue={profile.firstName}
-           onChange={(e) => setProfile({ ...profile, firstName: e.target.value }) }
-         />
-         <FormControl id="wd-lastname" className="mb-2"
-           defaultValue={profile.lastName}
-           onChange={(e) => setProfile({ ...profile, lastName: e.target.value }) } />
-         <FormControl id="wd-dob" className="mb-2" type="date"
-           defaultValue={profile.dob}
-           onChange={(e) => setProfile({ ...profile, dob: e.target.value })} />
-         <FormControl id="wd-email" className="mb-2"
-           defaultValue={profile.email}
-           onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
-         <select className="form-control mb-2" id="wd-role" 
-           onChange={(e) => setProfile({ ...profile, role: e.target.value })} >
-           <option value="USER">User</option>
-           <option value="ADMIN">Admin</option>
-           <option value="FACULTY">Faculty</option>{" "}
-           <option value="STUDENT">Student</option>
-         </select>
-         <div>
-         <Button onClick={updateProfile} className="btn btn-primary w-100 mb-2"> Update </Button>
-         <Button onClick={signout} className="w-100 mb-2" id="wd-signout-btn">
-           Sign out
-         </Button>
-         </div>
-       </div>
-     )}
-   </div>
-);}
+  const signout = async () => {
+    await client.signout();
+    dispatch(setCurrentUser(null));
+    dispatch(setCourses([]));
+    dispatch(setEnrollments([]));
+    router.push("/Account/Signin");
+  };
+  const updateProfile = async () => {
+    try {
+      const updatedUser = await client.updateUser(profile);
+      dispatch(setCurrentUser(updatedUser));
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update profile");
+    }
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  return (
+    <div className="d-flex vh-100 p-4">
+      <div style={{ width: "600px" }}>
+        <h3>Profile</h3>
+        {profile && (
+          <div>
+            <FormControl
+              id="wd-username"
+              className="mb-2"
+              defaultValue={profile.username}
+              onChange={(e) =>
+                setProfile({ ...profile, username: e.target.value })
+              }
+            />
+            <FormControl
+              id="wd-password"
+              className="mb-2"
+              defaultValue={profile.password}
+              onChange={(e) =>
+                setProfile({ ...profile, password: e.target.value })
+              }
+            />
+            <FormControl
+              id="wd-firstname"
+              className="mb-2"
+              defaultValue={profile.firstName}
+              onChange={(e) =>
+                setProfile({ ...profile, firstName: e.target.value })
+              }
+            />
+            <FormControl
+              id="wd-lastname"
+              className="mb-2"
+              defaultValue={profile.lastName}
+              onChange={(e) =>
+                setProfile({ ...profile, lastName: e.target.value })
+              }
+            />
+            <FormControl
+              id="wd-dob"
+              className="mb-2"
+              type="date"
+              defaultValue={profile.dob}
+              onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+            />
+            <FormControl
+              id="wd-email"
+              className="mb-2"
+              defaultValue={profile.email}
+              onChange={(e) =>
+                setProfile({ ...profile, email: e.target.value })
+              }
+            />
+            <select
+              className="form-control mb-2"
+              id="wd-role"
+              onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+            >
+              <option value="USER">User</option>
+              <option value="ADMIN">Admin</option>
+              <option value="FACULTY">Faculty</option>{" "}
+              <option value="STUDENT">Student</option>
+            </select>
+            <div>
+              <Button
+                onClick={updateProfile}
+                className="btn btn-primary w-100 mb-2"
+              >
+                {" "}
+                Update{" "}
+              </Button>
+              <Button
+                onClick={signout}
+                className="w-100 mb-2"
+                id="wd-signout-btn"
+              >
+                Sign out
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

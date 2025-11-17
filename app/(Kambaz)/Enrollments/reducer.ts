@@ -10,17 +10,13 @@ interface EnrollmentsState {
   enrollments: Enrollment[];
 }
 
-const savedEnrollments = typeof window !== "undefined"
-  ? localStorage.getItem("enrollments")
-  : null;
+const savedEnrollments =
+  typeof window !== "undefined" ? localStorage.getItem("enrollments") : null;
 
-import * as db from "../Database"; 
+import * as db from "../Database";
 const initialState: EnrollmentsState = {
-  enrollments: savedEnrollments
-    ? JSON.parse(savedEnrollments)
-    : db.enrollments,
+  enrollments: savedEnrollments ? JSON.parse(savedEnrollments) : db.enrollments,
 };
-
 
 const enrollmentsSlice = createSlice({
   name: "enrollments",
@@ -33,12 +29,17 @@ const enrollmentsSlice = createSlice({
     unenrollCourse: (state, action: PayloadAction<Enrollment>) => {
       state.enrollments = state.enrollments.filter(
         (e) =>
-          !(e.user === action.payload.user && e.course === action.payload.course)
+          !(
+            e.user === action.payload.user && e.course === action.payload.course
+          )
       );
       localStorage.setItem("enrollments", JSON.stringify(state.enrollments));
+    },
+    setEnrollments: (state, action: PayloadAction<Enrollment[]>) => {
+      state.enrollments = action.payload;
     },
   },
 });
 
-export const { enrollCourse, unenrollCourse } = enrollmentsSlice.actions;
+export const { enrollCourse, unenrollCourse, setEnrollments } = enrollmentsSlice.actions;
 export default enrollmentsSlice.reducer;

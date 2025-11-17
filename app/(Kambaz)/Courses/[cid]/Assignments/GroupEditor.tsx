@@ -32,7 +32,7 @@ export default function GroupEditor({
         <Modal.Title>{dialogTitle}</Modal.Title>
       </Modal.Header>
 
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="groupName">
             <Form.Label>Group Name</Form.Label>
@@ -63,7 +63,7 @@ export default function GroupEditor({
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" onClick={handleSubmit}>
             Add Group
           </Button>
         </Modal.Footer>
