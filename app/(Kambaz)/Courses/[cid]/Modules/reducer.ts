@@ -9,6 +9,9 @@ const modulesSlice = createSlice({
   name: "modules",
   initialState,
   reducers: {
+    setModules: (state, { payload: modules }) => {
+      state.modules = modules;
+    },
     addModule: (state, { payload: module }) => {
       const newModule: any = {
         _id: uuidv4(),
@@ -32,7 +35,6 @@ const modulesSlice = createSlice({
         m._id === moduleId ? { ...m, editing: true } : m
       ) as any;
     },
-    // Example reducer logic
     addLesson: (state, action) => {
       const { moduleId, name } = action.payload;
       const foundModule = state.modules.find((m) => m._id === moduleId);
@@ -41,13 +43,12 @@ const modulesSlice = createSlice({
         foundModule.lessons.push({
           _id: Date.now().toString(),
           name,
-          description: "", // default empty description
+          description: "",
           module: moduleId,});
       }
     }
-
   },
 });
-export const { addModule, deleteModule, updateModule, editModule, addLesson} =
+export const { setModules, addModule, deleteModule, updateModule, editModule, addLesson} =
   modulesSlice.actions;
 export default modulesSlice.reducer;
