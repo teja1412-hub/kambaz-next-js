@@ -9,27 +9,31 @@ import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
 export default function Signin() {
-  const [credentials, setCredentials] = useState({ 
-    username: "", 
-    password: "" 
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
   });
   const [error, setError] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
 
   const signin = async () => {
+    // e.preventDefault();
+    // setError("");
     try {
       console.log("Attempting signin with:", credentials);
       const user = await client.signin(credentials);
       console.log("Signin successful, user:", user);
-      
+
       dispatch(setCurrentUser(user));
       console.log("Redux updated, navigating to Dashboard");
-      
+
       router.push("/Dashboard");
     } catch (err: any) {
       console.error("Signin error:", err);
-      setError(err.response?.data?.message || "Login failed");
+      setError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     }
   };
 
@@ -37,6 +41,11 @@ export default function Signin() {
     <div className="d-flex vh-100 p-4">
       <div style={{ width: "300px" }}>
         <h3 className="mb-4">Sign In</h3>
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
         <Form>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Control
@@ -61,11 +70,7 @@ export default function Signin() {
           </Form.Group>
 
           <div className="d-grid gap-2 mb-3">
-            <Button
-              id="wd-signin-btn"
-              variant="primary"
-              onClick={signin}
-            >
+            <Button id="wd-signin-btn" variant="primary" onClick={signin}>
               Sign In
             </Button>
           </div>

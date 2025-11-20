@@ -19,6 +19,9 @@ export default function AssignmentEditor() {
   const assignments = useSelector(
     (state: RootState) => state.assignmentsReducer.assignments
   );
+
+  const isNewAssignment = aid == "new";
+
   const [assignment, setAssignment] = useState<any>({
     title: "",
     description: "",
@@ -32,25 +35,37 @@ export default function AssignmentEditor() {
     availableUntil: "",
     course: cid,
   });
+
   useEffect(() => {
-    const currentAssignment = assignments.find((a: any) => a._id === aid);
-    if (currentAssignment) {
-      setAssignment(currentAssignment);
+    if (!isNewAssignment) {
+      const currentAssignment = assignments.find((a: any) => a._id === aid);
+      if (currentAssignment) {
+        setAssignment(currentAssignment);
+      }
     }
-  }, [aid, assignments]);
+  }, [aid, assignments, isNewAssignment]);
 
   const handleSave = async () => {
     try {
-      await client.updateAssignment(assignment);
-
-      const updatedAssignments = assignments.map((a: any) =>
-        a._id === assignment._id ? assignment : a
-      );
-      dispatch(setAssignments(updatedAssignments));
+      if (isNewAssignment) {
+        // CREATE new assignment
+        const newAssignment = await client.createAssignment(cid as string, assignment);
+        
+        // Add to Redux
+        dispatch(setAssignments([...assignments, newAssignment]));
+      } else {
+        // UPDATE existing assignment
+        await client.updateAssignment(assignment);
+        
+        const updatedAssignments = assignments.map((a: any) =>
+          a._id === assignment._id ? assignment : a
+        );
+        dispatch(setAssignments(updatedAssignments));
+      }
 
       router.push(`/Courses/${cid}/Assignments`);
     } catch (error) {
-      console.error("Error updating assignment:", error);
+      console.error("Error saving assignment:", error);
       alert("Failed to save assignment");
     }
   };
@@ -229,7 +244,7 @@ export default function AssignmentEditor() {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="wd-available-from">Due</Form.Label>
+                <Form.Label htmlFor="wd-due-date">Due</Form.Label>
                 <Form.Control
                   id="wd-due-date"
                   type="datetime-local"

@@ -52,6 +52,13 @@ export default function Assignments() {
     );
   };
 
+  const handleAddAssignment = () => {
+    if (!cid) return;
+
+    // Redirect to editor
+    router.push(`/Courses/${cid}/Assignments/new`);
+  };
+
   const courseAssignments = assignments.filter((a: any) => a.course === cid);
 
   const [groups, setGroups] = useState<
@@ -84,6 +91,7 @@ export default function Assignments() {
         <AssignementControls
           courseId={courseId}
           addGroup={addGroup}
+          addAssignment={handleAddAssignment}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           groups={groups}
@@ -108,8 +116,9 @@ export default function Assignments() {
                 >
                   {group.percent}% of Total
                 </p>
-                <AssignmentControlButtons 
-                courseId={courseId}
+                <AssignmentControlButtons
+                  courseId={courseId}
+                  addAssignment={handleAddAssignment}
                 />
               </div>
             </div>
@@ -130,7 +139,10 @@ export default function Assignments() {
                 >
                   40% of Total
                 </p>
-                <AssignmentControlButtons courseId={courseId} />
+                <AssignmentControlButtons
+                  courseId={courseId}
+                  addAssignment={handleAddAssignment}
+                />
               </div>
             </div>
 

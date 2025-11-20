@@ -11,12 +11,14 @@ export default function AssignementControls({
   addGroup,
   searchTerm,
   setSearchTerm,
+  addAssignment,
   groups,
 }: {
   courseId: string;
   addGroup: (name: string, percent: number) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  addAssignment: () => void;
   groups: { id: string; name: string; percent: number }[];
 }) {
   const [showGroup, setShowGroup] = useState(false);
@@ -58,7 +60,7 @@ export default function AssignementControls({
         <Button
           variant="danger"
           size="lg"
-          onClick={() => router.push(`/Courses/${courseId}/Assignments/new`)}
+          onClick={addAssignment}
         >
           <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
           Assignment
