@@ -6,18 +6,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 interface User {
-  _id: String;
-  username: String;
-  password: String;
-  firstName: String;
-  lastName: String;
-  email: String;
+  _id: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   dob: Date;
   role: "STUDENT"| "FACULTY"| "ADMIN"| "USER" | "TA";
-  loginId: String;
-  section: String;
+  loginId: string;
+  section: string;
   lastActivity: Date;
-  totalActivity: String;
+  totalActivity: string;
 }
 
 export default function AccountNavigation() {
