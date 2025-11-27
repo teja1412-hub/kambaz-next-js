@@ -18,15 +18,23 @@ export const createModule = async (courseId: string, module: any) => {
   return response.data;
 };
 
-export const updateModule = async (module: any) => {
+export const createLesson = async (courseId: string, moduleId: string, lesson: any) => {
+  const response = await axios.post(
+    `${COURSES_API}/${courseId}/modules/${moduleId}/lessons`,
+    lesson
+  );
+  return response.data;
+};
+
+export const updateModule = async (courseId: string, module: any) => {
   const response = await axios.put(
-    `${MODULES_API}/${module._id}`,
+    `${COURSES_API}/${courseId}/modules/${module._id}`,
     module
   );
   return response.data;
 };
 
-export const deleteModule = async (moduleId: string) => {
-  const response = await axios.delete(`${MODULES_API}/${moduleId}`);
+export const deleteModule = async (courseId: string, moduleId: string) => {
+  const response = await axios.delete(`${COURSES_API}/${courseId}/modules/${moduleId}`);
   return response.data;
 };

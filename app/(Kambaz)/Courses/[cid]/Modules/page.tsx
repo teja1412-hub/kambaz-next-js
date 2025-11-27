@@ -34,12 +34,12 @@ export default function Modules() {
   };
 
   const handleDeleteModule = async (moduleId: string) => {
-    await client.deleteModule(moduleId);
+    await client.deleteModule(cid as string, moduleId);
     dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
   };
 
   const handleUpdateModule = async (module: any) => {
-    await client.updateModule(module);
+    await client.updateModule(cid as string, module);
     const newModules = modules.map((m: any) => m._id === module._id ? module : m );
     dispatch(setModules(newModules));
   };
@@ -51,24 +51,25 @@ export default function Modules() {
     dispatch(setModules(updatedModules));
   };
 
-  const handleAddLesson = (moduleId: string, lessonName: string) => {
-    const updatedModules = modules.map((m: any) => {
-      if (m._id === moduleId) {
-        const newLesson = {
-          _id: Date.now().toString(),
-          name: lessonName,
-          description: "",
-          module: moduleId,
-        };
-        return {
-          ...m,
-          lessons: [...(m.lessons || []), newLesson],
-        };
-      }
-      return m;
-    });
-    dispatch(setModules(updatedModules));
-  };
+  const handleAddLesson = async (moduleId: string, lessonName: string) => {
+  if (!cid) return;
+  const newLesson = await client.createLesson(
+    cid as string,
+    moduleId,
+    {
+      name: lessonName,
+      course: cid,
+      module: moduleId,
+    }
+  );
+  const updatedModules = modules.map((m: any) =>
+    m._id === moduleId
+      ? { ...m, lessons: [...(m.lessons || []), newLesson] }
+      : m
+  );
+  dispatch(setModules(updatedModules));
+};
+
 
   useEffect(() => {
     fetchModules();
@@ -111,7 +112,7 @@ export default function Modules() {
                       )}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      handleUpdateModule({ ...module, editing: false });
+                      handleUpdateModule({ ...module, name: e.currentTarget.value, editing: false });
                     }
                   }}
                   defaultValue={module.name}

@@ -5,9 +5,31 @@ import { Nav, NavItem, NavLink } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
+interface User {
+  _id: String;
+  username: String;
+  password: String;
+  firstName: String;
+  lastName: String;
+  email: String;
+  dob: Date;
+  role: "STUDENT"| "FACULTY"| "ADMIN"| "USER" | "TA";
+  loginId: String;
+  section: String;
+  lastActivity: Date;
+  totalActivity: String;
+}
+
 export default function AccountNavigation() {
-  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
-  const links = currentUser!==null ? ["Profile"] : ["Signin", "Signup"];
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  ) as {currentUser: User | null};
+  const links = currentUser !== null ? ["Profile"] : ["Signin", "Signup"];
+
+  if (currentUser?.role === "ADMIN") {
+    links.push("Users");
+  }
+
   const pathname = usePathname();
 
   return (

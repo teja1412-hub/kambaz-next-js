@@ -19,8 +19,7 @@ export default function Home() {
   // Check if current user is enrolled in this course
   const isEnrolled = enrollments.some(
     (enrollment: any) =>
-      enrollment.user === currentUser?._id &&
-      enrollment.course === courseId
+      enrollment.code === courseId
   );
 
   // Redirect unauthorized users back to dashboard

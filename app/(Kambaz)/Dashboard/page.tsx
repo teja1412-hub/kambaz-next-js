@@ -23,7 +23,7 @@ import * as enrollClient from "../Enrollments/client";
 export default function Dashboard() {
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
-  ) as {currentUser: any};;
+  ) as { currentUser: any };
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const enrollmentsState = useSelector(
@@ -104,10 +104,7 @@ export default function Dashboard() {
     } else {
       fetchCourses();
     }
-  }, [showAllCourses,
-    fetchCourses,
-    fetchEnrollments,
-  ]);
+  }, [showAllCourses, fetchCourses, fetchEnrollments]);
 
   return (
     <div id="wd-dashboard">
@@ -224,8 +221,8 @@ export default function Dashboard() {
                   <div className="d-flex justify-content-start mt-2">
                     {showAllCourses &&
                       (enrollmentsState.some(
-                        (e: any) =>
-                          e.user === currentUser._id && e.course === currentCourse._id
+                        (enrolledCourse: any) =>
+                          enrolledCourse._id === currentCourse._id
                       ) ? (
                         <Button
                           variant="danger"
