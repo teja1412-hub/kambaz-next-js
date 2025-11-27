@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FormCheck, FormControl } from "react-bootstrap";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const HTTP_SERVER = process.env.NEXT_PUBLIC_REMOTE_SERVER;
 export default function WorkingWithArrays() {
   const API = `${HTTP_SERVER}/lab5/todos`;
   const [todo, setTodo] = useState({

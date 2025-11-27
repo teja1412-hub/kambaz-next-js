@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-const REMOTE_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const REMOTE_SERVER = process.env.NEXT_PUBLIC_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 const MODULES_API = `${REMOTE_SERVER}/api/modules`;
 
