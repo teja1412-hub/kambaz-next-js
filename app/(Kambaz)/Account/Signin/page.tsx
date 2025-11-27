@@ -21,12 +21,9 @@ export default function Signin() {
     // e.preventDefault();
     // setError("");
     try {
-      console.log("Attempting signin with:", credentials);
       const user = await client.signin(credentials);
-      console.log("Signin successful, user:", user);
 
       dispatch(setCurrentUser(user));
-      console.log("Redux updated, navigating to Dashboard");
 
       router.push("/Dashboard");
     } catch (err: any) {
