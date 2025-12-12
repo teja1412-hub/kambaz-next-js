@@ -88,6 +88,11 @@ export default function Assignments() {
     // Handles case when cid is missing in the URL
     return <div>Course not found!</div>;
   }
+
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  ) as { currentUser: any };
+
   return (
     <div id="wd-assignments-quizzes-exams-projects">
       <div id="wd-assignments">
@@ -160,12 +165,17 @@ export default function Assignments() {
                       <BsGripVertical className="me-2 fs-3 mt-1" />
                       <FaRegFileAlt className="me-2 text-success fs-4 mt-1" />
                       <div>
-                        <Link
-                          href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                        <a
+                          href="#"
                           className="wd-assignment-link"
+                          onClick={(e) => {
+                            if (currentUser?.role === "FACULTY") {
+                              router.push(`/Courses/${cid}/Assignments/${assignment._id}`);
+                            }
+                          }}
                         >
                           {assignment.title}
-                        </Link>
+                        </a>
                         <br />
                         <span className="text-danger">
                           Multiple Modules
