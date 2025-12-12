@@ -5,6 +5,8 @@ import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import GroupEditor from "./GroupEditor";
+import { RootState } from "../../../store";
+import { useSelector } from "react-redux";
 
 export default function AssignementControls({
   courseId,
@@ -34,10 +36,13 @@ export default function AssignementControls({
   const handleShowGroup = () => setShowGroup(true);
 
   const handleAddGroup = () => {
-  if (!groupName.trim()) return;
-  addGroup(groupName, groupPercent);
-  handleCloseGroup();
-};
+    if (!groupName.trim()) return;
+    addGroup(groupName, groupPercent);
+    handleCloseGroup();
+  };
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  ) as { currentUser: any };
 
   return (
     <div id="wd-modules-controls" className="d-flex justify-content-between align-items-center my-2 gap-2">
@@ -51,21 +56,24 @@ export default function AssignementControls({
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </InputGroup>
-
-      <div className="d-flex flex-wrap justify-content-end gap-2 mb-0">
-        <Button variant="secondary" size="lg" onClick={handleShowGroup}>
-          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-          Group
-        </Button>
-        <Button
-          variant="danger"
-          size="lg"
-          onClick={addAssignment}
-        >
-          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-          Assignment
-        </Button>
-      </div>
+      {currentUser?.role === "FACULTY" && (
+        <>
+          <div className="d-flex flex-wrap justify-content-end gap-2 mb-0">
+            <Button variant="secondary" size="lg" onClick={handleShowGroup}>
+              <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+              Group
+            </Button>
+            <Button
+              variant="danger"
+              size="lg"
+              onClick={addAssignment}
+            >
+              <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+              Assignment
+            </Button>
+          </div>
+        </>
+      )}
 
       <GroupEditor
         show={showGroup}

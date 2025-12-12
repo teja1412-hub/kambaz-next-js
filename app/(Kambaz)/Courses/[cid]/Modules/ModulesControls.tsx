@@ -3,6 +3,8 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "re
 import { FaBan, FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
 import ModuleEditor from "./ModuleEditor";
+import { RootState } from "../../../store";
+import { useSelector } from "react-redux";
 
 export default function ModulesControls({
   moduleName,
@@ -17,20 +19,26 @@ export default function ModulesControls({
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  ) as { currentUser: any };
 
   return (
     <div id="wd-modules-controls" className="d-flex flex-wrap justify-content-end gap-2 mb-0">
-      <Button
-        variant="danger"
-        size="lg"
-        className="me-1 float-end"
-        id="wd-add-module-btn"
-        onClick={handleShow}
-      >
-        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-        Module
-      </Button>
-
+      {currentUser?.role === "FACULTY" && (
+        <>
+          <Button
+            variant="danger"
+            size="lg"
+            className="me-1 float-end"
+            id="wd-add-module-btn"
+            onClick={handleShow}
+          >
+            <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+            Module
+          </Button>
+        </>
+      )}
       <Dropdown className="float-end me-2">
         <DropdownToggle variant="secondary" size="lg" id="wd-publish-all-btn">
           <GreenCheckmark /> Publish All
