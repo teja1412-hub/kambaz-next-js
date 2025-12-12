@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
