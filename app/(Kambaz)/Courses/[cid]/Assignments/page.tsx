@@ -166,7 +166,7 @@ export default function Assignments() {
                       <FaRegFileAlt className="me-2 text-success fs-4 mt-1" />
                       <div>
                         <a
-                          href="#"
+                          href=""
                           className="wd-assignment-link"
                           onClick={(e) => {
                             if (currentUser?.role === "FACULTY") {
