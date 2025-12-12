@@ -169,6 +169,7 @@ export default function Assignments() {
                           href=""
                           className="wd-assignment-link"
                           onClick={(e) => {
+                            e.preventDefault();
                             if (currentUser?.role === "FACULTY") {
                               router.push(`/Courses/${cid}/Assignments/${assignment._id}`);
                             }
