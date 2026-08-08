@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kambaz LMS — Frontend
+
+Frontend for Kambaz, a Canvas-style Learning Management System, built with Next.js (App Router), TypeScript, and Redux.
+
+**Live app:** [kambaz-next-js-sigma.vercel.app](https://kambaz-next-js-sigma.vercel.app/)
+**Backend:** [kambaz-node-server-app-6n5i.onrender.com](https://kambaz-node-server-app-6n5i.onrender.com)
+**Backend repo:** [kambaz-node-server-app](https://github.com/teja1412-hub/kambaz-node-server-app)
+
+> **Note:** The backend runs on Render's free tier and spins down after inactivity. If the live app hangs on load, the backend is likely waking up — give it 30–60s and refresh.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+
+---
+
+## Overview
+
+Kambaz replicates core Canvas LMS functionality: course management, assignments, modules, enrollments, and role-based dashboards for Faculty, Students, and Admins. This repo is the client — built solo as part of CS4550 (Web Development) at Northeastern University, paired with a custom [Express/MongoDB backend](https://github.com/teja1412-hub/kambaz-node-server-app).
+
+## Architecture
+
+Built on Next.js App Router, organized by feature rather than by file type — each domain owns its UI, API calls, and state:
+
+```
+app/(Kambaz)/Courses/[cid]/Assignments/
+├── page.tsx      → route UI
+├── client.ts      → API calls to backend
+└── reducer.ts     → Redux slice for this feature's state
+```
+
+Course-scoped routes use dynamic segments (`[cid]`, `[aid]`) to reflect the natural Courses → Modules → Assignments hierarchy, so `/Courses/123/Assignments/456` maps directly to a specific assignment within a specific course.
+
+## Features
+
+- **Session-based auth**, coordinated with the backend's `express-session` cookies (`Account/Session.tsx`).
+- **Role-based UI** — Faculty see course/assignment editing controls; Students see enrollment and submission views.
+- **Per-feature Redux slices** (Account, Courses, Enrollments, Modules, Assignments) combined into a single store, keeping state colocated with the feature that owns it.
+- **Nested, dynamic routing** mirroring the real course structure rather than a flat page list.
+
+## Tech Stack
+
+`Next.js (App Router)` · `TypeScript` · `Redux` · `Axios` · `Bootstrap`
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+git clone https://github.com/teja1412-hub/kambaz-next-js.git
+cd kambaz-next-js
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires the [backend](https://github.com/teja1412-hub/kambaz-node-server-app) running (locally or deployed) — see [Environment Variables](#environment-variables).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description | Example |
+|---|---|---|
+| `NEXT_PUBLIC_REMOTE_SERVER` | Base URL of the backend API | `http://localhost:4000` (local) or the deployed Render URL |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/(Kambaz)/
+├── Account/          sign in, sign up, profile, session
+├── Courses/[cid]/    course detail, nested by course ID
+│   ├── Modules/
+│   ├── Assignments/[aid]/
+│   ├── Grades/
+│   └── People/
+├── Enrollments/
+└── Dashboard/
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`Labs/` contains earlier coursework exercises (React/Bootstrap fundamentals) that predate the Kambaz app — kept for reference, not part of the production app.
